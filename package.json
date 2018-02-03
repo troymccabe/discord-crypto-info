@@ -1,0 +1,15 @@
+{
+    "name": "discord-crypto-info",
+    "preferGlobal": true,
+    "version": "0.0.1",
+    "author": "Troy McCabe <troymccabe@gmail.com>",
+    "description": "Notify chat occupants of crypto donations",
+    "license": "MIT",
+    "engines": {
+        "node": ">=0.10"
+    },
+    "dependencies": {
+        "discord.js": "^11.3.0",
+        "node-coinmarketcap": "Aex12/node-coinmarketcap"
+    }
+}
