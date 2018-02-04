@@ -12,10 +12,11 @@ const Discord = require("discord.js");
 var client = new Discord.Client();
 client.on('ready', () => {});
 client.on('message', msg => {
-    var matches = msg.content.match(/[\$|\€|\¥|\£][a-z]{2,5}/igm);
+    var matches = msg.content.toLowerCase().match(/[\$|\€|\¥|\£][a-z]{2,5}/igm);
     if (matches && matches.length) {
+        matches = [...new Set(matches)];
         for (var i = 0; i < matches.length; i++) {
-            var currency = 'USD';
+            var currency;
             var currencySymbol = matches[i].substr(0, 1);
             var symbol = matches[i].substr(1);
             switch(currencySymbol) {
@@ -30,6 +31,10 @@ client.on('message', msg => {
                 case '£':
                     currency = 'GBP';
                     break;
+
+                case '$':
+                default:
+                    currency = 'USD';
             }
             (function(currency, currencySymbol, symbol) {
                 var coinmarketcap = new CoinMarketCap({convert: currency});
@@ -39,10 +44,10 @@ client.on('message', msg => {
                         var currencyLower = currency.toLowerCase();
                         msg.channel.send(
                             `__**#${coin.rank}: ${coin.name} (${coin.symbol})**__\n` +
-                            `Price (${currency}): **${currencySymbol}${coin['price_' + currencyLower]}**\n` +
+                            `Price (${currency}): **${currencySymbol}${new Number(coin['price_' + currencyLower]).toLocaleString()}**\n` +
                             `Price (BTC): **${coin.price_btc}**\n` +
-                            `24 Hour Volume (${currency}): **${currencySymbol}${coin['24h_volume_' + currencyLower]}**\n` +
-                            `Market Cap (${currency}): **${currencySymbol}${coin['market_cap_' + currencyLower]}**\n` +
+                            `24 Hour Volume (${currency}): **${currencySymbol}${new Number(coin['24h_volume_' + currencyLower]).toLocaleString()}**\n` +
+                            `Market Cap (${currency}): **${currencySymbol}${new Number(coin['market_cap_' + currencyLower]).toLocaleString()}**\n` +
                             `% Change (1 Hour): **${coin.percent_change_1h}%**\n` +
                             `% Change (24 Hour): **${coin.percent_change_24h}%**\n` +
                             `% Change (7 Days): **${coin.percent_change_7d}%**`
