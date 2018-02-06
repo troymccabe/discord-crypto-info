@@ -16,7 +16,9 @@ const Discord = require("discord.js");
  */
 function getChangeEmoji(percent) {
     var percent = new Number(percent);
-    if (percent < 0) {
+    if (percent <= -50) {
+        return ':skull_crossbones:';
+    } else if (percent > -50 && percent < 0) {
         return ':small_red_triangle_down:';
     } else if (percent == 0) {
         return ':white_circle:';
