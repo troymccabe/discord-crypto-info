@@ -21,7 +21,7 @@ function getChangeEmoji(percent) {
     } else if (percent == 0) {
         return ':white_circle:';
     } else if (percent > 0 && percent < 50) {
-        return ':green_triangle_up:';
+        return '<:green_triangle_up:410086566896074754>';
     } else if (percent >= 50) {
         return ':rocket:';
     }
@@ -30,7 +30,7 @@ function getChangeEmoji(percent) {
 var client = new Discord.Client();
 client.on('ready', () => {});
 client.on('message', msg => {
-    var matches = msg.content.toLowerCase().match(/[\$|\€|\¥|\£][a-z]{2,5}/igm);
+    var matches = msg.content.toLowerCase().match(/[\$|\€|\¥|\£][a-z]{2,6}/igm);
     if (matches && matches.length) {
         matches = [...new Set(matches)];
         for (var i = 0; i < matches.length; i++) {
