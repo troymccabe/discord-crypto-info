@@ -9,6 +9,24 @@
 const CoinMarketCap = require("node-coinmarketcap");
 const Discord = require("discord.js");
 
+/**
+ * Gets the proper emoji for the change percent
+ * 
+ * @param {string} percent 
+ */
+function getChangeEmoji(percent) {
+    var percent = new Number(percent);
+    if (percent < 0) {
+        return ':small_red_triangle_down:';
+    } else if (percent == 0) {
+        return ':white_circle:';
+    } else if (percent > 0 && percent < 50) {
+        return ':green_triangle_up:';
+    } else if (percent >= 50) {
+        return ':rocket:';
+    }
+}
+
 var client = new Discord.Client();
 client.on('ready', () => {});
 client.on('message', msg => {
@@ -43,14 +61,14 @@ client.on('message', msg => {
                     if (coin) {
                         var currencyLower = currency.toLowerCase();
                         msg.channel.send(
-                            `__**#${coin.rank}: ${coin.name} (${coin.symbol})**__\n` +
+                            `__**#${coin.rank}: ${coin.name} (${coin.symbol}) ${getChangeEmoji(coin.percent_change_1h)}**__\n` +
                             `Price (${currency}): **${currencySymbol}${new Number(coin['price_' + currencyLower]).toLocaleString()}**\n` +
                             `Price (BTC): **${coin.price_btc}**\n` +
                             `24 Hour Volume (${currency}): **${currencySymbol}${new Number(coin['24h_volume_' + currencyLower]).toLocaleString()}**\n` +
                             `Market Cap (${currency}): **${currencySymbol}${new Number(coin['market_cap_' + currencyLower]).toLocaleString()}**\n` +
-                            `% Change (1 Hour): **${coin.percent_change_1h}%**\n` +
-                            `% Change (24 Hour): **${coin.percent_change_24h}%**\n` +
-                            `% Change (7 Days): **${coin.percent_change_7d}%**`
+                            `% Change (1 Hour): **${coin.percent_change_1h}% ${getChangeEmoji(coin.percent_change_1h)}**\n` +
+                            `% Change (24 Hour): **${coin.percent_change_24h}% ${getChangeEmoji(coin.percent_change_24h)}**\n` +
+                            `% Change (7 Days): **${coin.percent_change_7d}% ${getChangeEmoji(coin.percent_change_7d)}**`
                         ).catch(reason => {});
                     }
                 });
@@ -59,4 +77,4 @@ client.on('message', msg => {
     }
 });
 
-client.login(process.env.DISCORD_TOKEN);
+client.login(process.env.DISCORD_CRYPTO_INFO_TOKEN);
