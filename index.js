@@ -32,7 +32,7 @@ function getChangeEmoji(percent) {
 var client = new Discord.Client();
 client.on('ready', () => {});
 client.on('message', msg => {
-    var matches = msg.content.toLowerCase().match(/[\$|\€|\¥|\£][a-z]{2,6}/igm);
+    var matches = msg.content.toLowerCase().match(/[\$|\€|\¥|\£]\w{2,6}/igm);
     if (matches && matches.length) {
         matches = [...new Set(matches)];
         for (var i = 0; i < matches.length; i++) {
